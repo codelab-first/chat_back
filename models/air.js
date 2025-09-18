@@ -8,7 +8,6 @@ module.exports = class Air extends Sequelize.Model {
         so2Grade: { type: Sequelize.INTEGER, allowNull: true },
         o3Grade: { type: Sequelize.INTEGER, allowNull: true },
         khaiGrade: { type: Sequelize.INTEGER, allowNull: true },
-        khaiGrade: { type: Sequelize.INTEGER, allowNull: true },
         no2Grade: { type: Sequelize.INTEGER, allowNull: true },
         pm25Grade: { type: Sequelize.INTEGER, allowNull: true },
         pm10Grade: { type: Sequelize.INTEGER, allowNull: true },
