@@ -7,7 +7,7 @@ module.exports = class Position extends Sequelize.Model {
         dmY: { type: Sequelize.FLOAT(10, 3), allowNull: false },
         addr: { type: Sequelize.STRING, allowNull: false },
         sidoName: { type: Sequelize.STRING, allowNull: true },
-        stationName: { type: Sequelize.STRING, allowNull: true },
+        stationName: { type: Sequelize.STRING, unique: true },
         dataTime: { type: Sequelize.STRING, allowNull: false },
       },
       {

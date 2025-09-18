@@ -13,7 +13,7 @@ module.exports = class Air extends Sequelize.Model {
         pm10Grade: { type: Sequelize.INTEGER, allowNull: true },
 
         sidoName: { type: Sequelize.STRING, allowNull: true },
-        stationName: { type: Sequelize.STRING, allowNull: true },
+        stationName: { type: Sequelize.STRING, unique: true },
         dataTime: { type: Sequelize.STRING, allowNull: false },
       },
       {
