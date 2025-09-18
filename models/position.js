@@ -7,7 +7,7 @@ module.exports = class Position extends Sequelize.Model {
         dmY: { type: Sequelize.FLOAT(10, 3), allowNull: false },
         addr: { type: Sequelize.STRING, allowNull: false },
         sidoName: { type: Sequelize.STRING, allowNull: true },
-        stationName: { type: Sequelize.STRING, unique: true },
+        stationName: { type: Sequelize.STRING, unique: true, allowNull: false },
         dataTime: { type: Sequelize.STRING, allowNull: false },
       },
       {
@@ -23,6 +23,9 @@ module.exports = class Position extends Sequelize.Model {
     );
   }
   static associate(db) {
-    db.Position.hasMany(db.Air);
+    db.Position.hasMany(db.Air, {
+      targetKey: "stationName",
+      foreignKey: "stationName",
+    });
   }
 };
