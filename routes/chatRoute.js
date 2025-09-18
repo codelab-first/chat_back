@@ -10,17 +10,18 @@ const upload = multer({
       file.originalname = Buffer.from(file.originalname, "latin1").toString(
         "utf8"
       );
-      cb(null,file.originalname)
+      cb(null, file.originalname);
     },
-    destination:(req,file,cb){
-      cb(null,"uploads/")
-    }
+    destination(req, file, cb) {
+      cb(null, "uploads/");
+    },
   }),
 });
-router.post('/images',upload.array('images'),async(req,res)=>{
-  try{
-req.files.map(file=>{
-  sharp(file.path)
-})
-  }catch(e){}
-})
+router.post("/images", upload.array("images"), async (req, res) => {
+  // try {
+  //   req.files.map((file) => {
+  //     sharp(file.path);
+  //   });
+  // } catch (e) {}
+});
+module.exports = router;
