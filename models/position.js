@@ -5,10 +5,10 @@ module.exports = class Position extends Sequelize.Model {
       {
         dmX: { type: Sequelize.FLOAT(10, 3), allowNull: false },
         dmY: { type: Sequelize.FLOAT(10, 3), allowNull: false },
-        addr: { type: Sequelize.STRING, allowNull: false },
-        sidoName: { type: Sequelize.STRING, allowNull: true },
+        addr: { type: Sequelize.STRING, allowNull: true },
         stationName: { type: Sequelize.STRING, unique: true, allowNull: false },
-        dataTime: { type: Sequelize.STRING, allowNull: false },
+        createdAt: { type: Sequelize.DATE, allowNull: true },
+        updatedAt: { type: Sequelize.DATE, allowNull: true },
       },
       {
         sequelize,

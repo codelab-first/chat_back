@@ -11,10 +11,11 @@ module.exports = class Air extends Sequelize.Model {
         no2Grade: { type: Sequelize.INTEGER, allowNull: true },
         pm25Grade: { type: Sequelize.INTEGER, allowNull: true },
         pm10Grade: { type: Sequelize.INTEGER, allowNull: true },
-
         sidoName: { type: Sequelize.STRING, allowNull: true },
         stationName: { type: Sequelize.STRING, unique: true, allowNull: false },
         dataTime: { type: Sequelize.STRING, allowNull: false },
+        createdAt: { type: Sequelize.DATE, allowNull: true },
+        updatedAt: { type: Sequelize.DATE, allowNull: true },
       },
       {
         sequelize,
