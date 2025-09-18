@@ -1,0 +1,30 @@
+.containers {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+}
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  margin-bottom: 1em;
+  background-color: #eee;
+}
+.navi-wrap {
+  display: flex;
+}
+.navi-wrap li:not(:last-child)::after {
+  display: inline-block;
+  content: "/";
+  margin: 0 0.5em;
+}
+.containers .book-tbl {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+.book-tbl th,
+.book-tbl td {
+  padding: 0.5em;
+  border-bottom: 1px solid #ccc;
+}
