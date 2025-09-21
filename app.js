@@ -15,8 +15,7 @@ sequelize
     console.error(e);
   });
 app.listen(process.env.port);
-app.set("view engine", "ejs");
-app.set("views", path.resolve(__dirname, "./views"));
+
 app.use(cors(require("./common/module/cors")()));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
