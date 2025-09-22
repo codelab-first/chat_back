@@ -7,10 +7,10 @@ module.exports = class Chat extends Sequelize.Model {
         chat: { type: Sequelize.STRING(150) },
         image: { type: Sequelize.STRING(200) },
          createdAt: { type: Sequelize.DATE, allowNull: true,
-          allowNull: true,
+         
      },
         updatedAt: { type: Sequelize.DATE, allowNull: true,
-          allowNull: true,
+          
            },
       },
       {
