@@ -11,7 +11,8 @@ module.exports = class User extends Sequelize.Model {
           defaultValue: timestamps, },
         updatedAt: { type: Sequelize.DATE, allowNull: true,
           allowNull: true,
-          defaultValue: timestamps, },
+           type: Sequelize.DATE,
+      defaultValue: Sequelize.fn("NOW"), },
       },
       {
         sequelize,
