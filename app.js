@@ -14,7 +14,9 @@ sequelize
   .catch((e) => {
     console.error(e);
   });
-app.listen(process.env.port);
+app.listen(process.env.port, () => {
+  console.log(`${process.env.port}번 포트에서 서버 대기 중`);
+});
 
 app.use(cors(require("./common/module/cors")()));
 app.use(express.json());
@@ -25,6 +27,7 @@ app.use("/upload", express.static("./storages"));
 const airRoute = require("./routes/airRoute");
 const authRoute = require("./routes/authRoute");
 const chatRoute = require("./routes/chatRoute");
+const indexRoute = require("./routes");
 // const publicRouter = require("./routes/public-router");
 // const { isApi } = require("./middlewares/auth-mw");
 
@@ -32,6 +35,7 @@ const chatRoute = require("./routes/chatRoute");
 app.use("/air", airRoute);
 app.use("/auth", authRoute);
 app.use("/chat", chatRoute);
+app.use("/", indexRoute);
 // app.use("/public", publicRouter);
 
 app.use(notFoundRouter);
