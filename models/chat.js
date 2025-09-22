@@ -6,6 +6,12 @@ module.exports = class Chat extends Sequelize.Model {
         name: { type: Sequelize.STRING(10) },
         chat: { type: Sequelize.STRING(150) },
         image: { type: Sequelize.STRING(200) },
+         createdAt: { type: Sequelize.DATE, allowNull: true,
+          allowNull: true,
+          defaultValue: timestamps, },
+        updatedAt: { type: Sequelize.DATE, allowNull: true,
+          allowNull: true,
+          defaultValue: timestamps, },
       },
       {
         sequelize,

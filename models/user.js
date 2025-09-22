@@ -6,6 +6,12 @@ module.exports = class User extends Sequelize.Model {
         email: { type: Sequelize.STRING(100), unique: true, allowNull: false },
         name: { type: Sequelize.STRING(10), allowNull: false },
         password: { type: Sequelize.STRING(200), allowNull: false },
+         createdAt: { type: Sequelize.DATE, allowNull: true,
+          allowNull: true,
+          defaultValue: timestamps, },
+        updatedAt: { type: Sequelize.DATE, allowNull: true,
+          allowNull: true,
+          defaultValue: timestamps, },
       },
       {
         sequelize,
