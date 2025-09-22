@@ -8,7 +8,7 @@ const joinCreateValidation = () => {
     body("email").notEmpty().trim().isEmail(),
     (req, res, next) => {
       const err = validationResult(req);
-    
+
       if (err.isEmpty()) next();
       else next(error(err.array()));
     },

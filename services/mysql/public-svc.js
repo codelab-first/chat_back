@@ -35,6 +35,7 @@ const createUser = () => {
     try {
       const { password, name, email } = req.body;
       const sql = `SELECT COUNT(id) AS count FROM users WHERE email=?`;
+      console.log(sql);
       const [rs] = await pool.execute(sql, [email]);
       if (rs[0].count > 0) {
         // 기존회원존재
@@ -47,7 +48,7 @@ const createUser = () => {
       );
       const sqlInsert = `
       INSERT INTO users 
-        (password, name, email) 
+      (password, name, email) 
       VALUES 
       (?, ?, ?)`;
       const [rsInsert] = await pool.execute(sqlInsert, [
@@ -55,7 +56,6 @@ const createUser = () => {
         name,
         email,
       ]);
-      console.log(name, email, password);
       req.rs = rsInsert;
       return next();
     } catch (err) {
