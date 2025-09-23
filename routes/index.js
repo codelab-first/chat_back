@@ -21,8 +21,14 @@ router.get("/api", async (req, res) => {
     `https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=${getParameters["serviceKey"]}&returnType=${getParameters["returnType"]}&numOfRows=100&pageNo=1&sidoName=${si}&ver=1.0` //시도별 실시간 측정정보 조회
   );
   //db삭제하고 다시 쓰기
-  await Position.bulkCreate(positionData.data.response.body.items);
-  await Air.bulkCreate(airData.data.response.body.items);
+  await Position.bulkCreate(
+    { ignoreDuplicates: true },
+    positionData.data.response.body.items
+  );
+  await Air.bulkCreate(
+    { ignoreDuplicates: true },
+    airData.data.response.body.items
+  );
 
   // res.status(200).json(positionData.data.response.body.items);
   res.status(200).json(positionData.data.response.body.items);
