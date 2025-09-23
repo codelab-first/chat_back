@@ -1,28 +1,35 @@
 require("./common/module/dotenv")();
 const express = require("express");
-const app = express();
 const path = require("path");
 const cors = require("cors");
 const notFoundRouter = require("./common/error/not-found-mw");
 const errorRouter = require("./common/error/error-mw");
 const { sequelize } = require("./models");
 
-const insertPosition = require("./script/insertPosition")
-const initAirCondition = require("./script/initAirCondition")
+const { createServer } = require("http");
+const webServer = require("./socket");
+const passport = require("passport");
+const passportJwt = require("passport-jwt");
+const JwtStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
+const bodyParser = require("body-parser");
 
+
+const insertPosition = require("./script/insertPosition");
+const initAirCondition = require("./script/initAirCondition");
+
+const app = express();
+const httpServer = createServer(app);
 sequelize
   .sync({ force: false })
   .then(async () => {
-    console.log("db 연결됨.")
-    await insertPosition()
-    await initAirCondition()
+    console.log("db 연결됨.");
+    await insertPosition();
+    await initAirCondition();
   })
   .catch((e) => {
     console.error(e);
   });
-app.listen(process.env.port, () => {
-  console.log(`${process.env.port}번 포트에서 서버 대기 중`);
-});
 
 app.use(cors(require("./common/module/cors")()));
 app.use(express.json());
@@ -49,3 +56,21 @@ app.use("/api", positionRoute);
 
 app.use(notFoundRouter);
 app.use(errorRouter);
+
+const jwtDecodeOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: jwtSecret,
+  issuer: "accounts.examplesoft.com",
+  audience: "yoursite.net",
+};
+
+passport.use(
+  new JwtStrategy(jwtDecodeOptions, (payload, done) => {
+    return done(null, payload.data);
+  })
+);
+
+httpServer.listen(process.env.port, () => {
+  console.log(`${process.env.port}번 포트에서 서버 대기 중`);
+});
+webServer(app, httpServer, passport);
