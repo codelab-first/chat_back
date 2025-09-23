@@ -8,11 +8,14 @@ const errorRouter = require("./common/error/error-mw")
 const { sequelize } = require("./models")
 
 const insertPosition = require("./script/insertPosition")
+const initAirCondition = require("./script/initAirCondition")
+
 sequelize
   .sync({ force: false })
   .then(async () => {
     console.log("db 연결됨.")
-    // await insertPosition()
+    await insertPosition()
+    await initAirCondition()
   })
   .catch((e) => {
     console.error(e)
