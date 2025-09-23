@@ -41,5 +41,8 @@ app.use("/chat", chatRoute)
 app.use("/", indexRoute)
 // app.use("/public", publicRouter);
 
+const positionRoute = require("./routes/postionRoute")
+app.use("/api", positionRoute)
+
 app.use(notFoundRouter)
 app.use(errorRouter)
