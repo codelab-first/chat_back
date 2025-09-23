@@ -33,15 +33,16 @@ const resizeImage = (path) => {
   }
 };
 router.post("/chat", async (req, res, next) => {
-  const { message } = req.body;
-  const user = await User.findOne({ where: { id: req.user.id } });
-  const chats = await Chat.create({ chat: message, name: req.user.name });
+  const { message, user: sender } = req.body;
+  console.log("req", req);
+  const user = await User.findOne({ where: { id: sender.id } });
+  const chats = await Chat.create({ chat: message, name: user.name });
   user.addChats(chats);
-  req.app
-    .get("io")
-    .to("chat")
-    .emit("chat", { chat: message, name: req.user.name });
-  return res.send("ok");
+  // req.app
+  //   .get("io")
+  //   .to("chat")
+  //   .emit("chat", { chat: message, name: req.user.name });
+  return res.status(200).json({ success: "ok" });
 });
 router.get("/all", async (req, res) => {
   try {
