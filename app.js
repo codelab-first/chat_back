@@ -7,12 +7,12 @@ const notFoundRouter = require("./common/error/not-found-mw")
 const errorRouter = require("./common/error/error-mw")
 const { sequelize } = require("./models")
 
-const insertLocation = require("./script/insertPosition")
+const insertPosition = require("./script/insertPosition")
 sequelize
   .sync({ force: false })
   .then(async () => {
     console.log("db 연결됨.")
-    await insertLocation()
+    // await insertPosition()
   })
   .catch((e) => {
     console.error(e)
