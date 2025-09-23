@@ -18,7 +18,7 @@ router.post("/join", joinCreateValidation(), createUser(), (req, res, next) => {
   res.status(200).json({ success: "OK" });
 });
 router.post("/login", loginUser(), (req, res, next) => {
-  // console.log(req.users);
+
   res.status(200).json({ success: "OK", data: req.users });
 });
 
