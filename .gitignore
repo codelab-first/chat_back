@@ -69,7 +69,9 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-# .env
+.env
+config/config.json
+routes/index.js
 # .env.*
 # !.env.example
 
