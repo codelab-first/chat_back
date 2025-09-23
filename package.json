@@ -2,7 +2,7 @@
   "name": "_0902-node-01",
   "version": "1.0.0",
   "description": "- 정보를 제공하는 기술",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --inspect app.js",
     "prd": "cross-env NODE_ENV=production nodemon app.js",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/booldook/codelab-aicc7-node01#readme",
   "dependencies": {
+    "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "cross-env": "^10.0.0",
