@@ -11,13 +11,16 @@ const { Server } = require("socket.io");
 //   };
 // }
 module.exports = (app, server, passport) => {
-  const io = new Server(server, {
-    withCredentials: true,
-    path: "/socket.io",
-    pingTimeout: 30000,
-  });
+  // const io = new Server(server, {
+  //   withCredentials: true,
+  //   path: "/socket.io",
+  //   pingTimeout: 30000,
+  // });
   app.set("io", io);
-
+  io.use((socket, next) => {
+    const token = socket.handshake.query.token;
+    next();
+  });
   // io.engine.use(onlyForHandshake(sessionMiddleware));
   // io.engine.use(onlyForHandshake(passport.session()));
   io.engine.use(
