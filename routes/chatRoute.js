@@ -4,6 +4,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const { Chat, User } = require("../models");
 const { Op } = require("sequelize");
+
 const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   storage: multer.diskStorage({
@@ -33,16 +34,21 @@ const resizeImage = (path) => {
   }
 };
 router.post("/chat", async (req, res, next) => {
-  const { message, user: sender } = req.body;
-  console.log("req", req);
-  const user = await User.findOne({ where: { id: sender.id } });
+  const {
+    message,
+    user: { id },
+  } = req.body;
+  // console.log(name);
+  // console.log(app.get("io"));
+  // const decoded=jwt.verify()
+  // console.log("message", message);
+  const user = await User.findOne({ where: { id } });
   const chats = await Chat.create({ chat: message, name: user.name });
   user.addChats(chats);
-  // req.app
-  //   .get("io")
-  //   .to("chat")
-  //   .emit("chat", { chat: message, name: req.user.name });
-  return res.status(200).json({ success: "ok" });
+
+  req.app.get("io").emit("message", { message, name: "김성현" });
+  return res.send("ok");
+  // return res.status(200).json({ success: "ok" });
 });
 router.get("/all", async (req, res) => {
   try {
