@@ -46,7 +46,7 @@ router.post("/chat", async (req, res, next) => {
   const chats = await Chat.create({ chat: message, name: user.name });
   user.addChats(chats);
 
-  req.app.get("io").emit("message", { message, name: "김성현" });
+  req.app.get("io").emit("message", { message, name: user.name });
   return res.send("ok");
   // return res.status(200).json({ success: "ok" });
 });
@@ -67,14 +67,16 @@ router.get("/all", async (req, res) => {
     return res.status(400).json(e.message);
   }
 });
-router.get("/searchChat", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { startDay, endDay } = req.query;
+    console.log(startDay, endDay);
     const chats = await Chat.findAll({
       where: {
         createdAt: { [Op.between]: [startDay, endDay] },
       },
     });
+    console.log(chats);
     return res.status(200).json(chats);
   } catch (e) {
     console.error(e);
