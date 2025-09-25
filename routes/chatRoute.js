@@ -67,17 +67,22 @@ router.get("/all", async (req, res) => {
     return res.status(400).json(e.message);
   }
 });
-router.get("/", async (req, res) => {
+router.get("/searchByDay", async (req, res) => {
   try {
     const { startDay, endDay } = req.query;
-    console.log(startDay, endDay);
+    // console.log(startDay, endDay);
+    const start = new Date(startDay);
+    const end = new Date(endDay);
+    console.log(start, end);
+    start.setDate(start.getDate() - 1);
+    end.setDate(end.getDate() + 1);
     const chats = await Chat.findAll({
       where: {
-        createdAt: { [Op.between]: [startDay, endDay] },
+        createdAt: { [Op.between]: [start, end] },
       },
     });
     console.log(chats);
-    return res.status(200).json(chats);
+    return res.status(200).json({ message: chats.message, name: chats.chat });
   } catch (e) {
     console.error(e);
     return res.status(400).json(e.message);
