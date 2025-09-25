@@ -73,7 +73,7 @@ router.get("/searchByDay", async (req, res) => {
     // console.log(startDay, endDay);
     const start = new Date(startDay);
     const end = new Date(endDay);
-    console.log(start, end);
+    // console.log(start, end);
     start.setDate(start.getDate() - 1);
     end.setDate(end.getDate() + 1);
     const chats = await Chat.findAll({
@@ -82,7 +82,7 @@ router.get("/searchByDay", async (req, res) => {
       },
     });
     console.log(chats);
-    return res.status(200).json({ message: chats.message, name: chats.chat });
+    return res.status(200).json(chats);
   } catch (e) {
     console.error(e);
     return res.status(400).json(e.message);
