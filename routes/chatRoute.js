@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const sharp = require("sharp");
 const { Chat, User } = require("../models");
 const { Op } = require("sequelize");
+
 const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   storage: multer.diskStorage({
@@ -16,6 +18,68 @@ const upload = multer({
       cb(null, "uploads/");
     },
   }),
+});
+const resizeImage = (path) => {
+  console.log("path is", path);
+  try {
+    sharp(path)
+      .resize(200, 200)
+      .withMetadata()
+      .toFile(`uploads/...`, (err, info) => {
+        //파일 이름을 변경해야하나
+        if (err) throw err;
+      });
+  } catch (e) {
+    console.error(e);
+  }
+};
+router.post("/chat", async (req, res, next) => {
+  const {
+    message,
+    user: { id },
+  } = req.body;
+  // console.log(name);
+  // console.log(app.get("io"));
+  // const decoded=jwt.verify()
+  // console.log("message", message);
+  const user = await User.findOne({ where: { id } });
+  const chats = await Chat.create({ chat: message, name: user.name });
+  user.addChats(chats);
+
+  req.app.get("io").emit("message", { message, name: "김성현" });
+  return res.send("ok");
+  // return res.status(200).json({ success: "ok" });
+});
+router.get("/all", async (req, res) => {
+  try {
+    const startDay = new Date();
+    const endDay = new Date();
+    startDay.setDate(startDay.getDate() - 1);
+    endDay.setDate(endDay.getDate());
+    const chats = await Chat.findAll({
+      where: {
+        createdAt: { [Op.between]: [startDay, endDay] },
+      },
+    });
+    return res.status(200).json(chats);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json(e.message);
+  }
+});
+router.get("/searchChat", async (req, res) => {
+  try {
+    const { startDay, endDay } = req.query;
+    const chats = await Chat.findAll({
+      where: {
+        createdAt: { [Op.between]: [startDay, endDay] },
+      },
+    });
+    return res.status(200).json(chats);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json(e.message);
+  }
 });
 router.post("/images", upload.array("images"), async (req, res) => {
   // try {

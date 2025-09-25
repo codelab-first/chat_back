@@ -7,8 +7,18 @@ module.exports = class Position extends Sequelize.Model {
         dmY: { type: Sequelize.FLOAT(10, 3), allowNull: false },
         addr: { type: Sequelize.STRING, allowNull: true },
         stationName: { type: Sequelize.STRING, unique: true, allowNull: false },
-        createdAt: { type: Sequelize.DATE, allowNull: true },
-        updatedAt: { type: Sequelize.DATE, allowNull: true },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: true,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.fn("NOW"),
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: true,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.fn("NOW"),
+        },
       },
       {
         sequelize,

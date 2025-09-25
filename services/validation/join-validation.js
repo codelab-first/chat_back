@@ -1,18 +1,18 @@
-const { body, validationResult } = require("express-validator")
-const error = require("../../common/error/error-util")
+const { body, validationResult } = require("express-validator");
+const error = require("../../common/error/error-util");
 
 const joinCreateValidation = () => {
   return [
-    body("usrId").notEmpty().trim().isLength({ min: 6, max: 16 }),
-    body("usrPw").notEmpty().trim().isLength({ min: 6, max: 16 }),
-    body("usrNm").notEmpty().trim(),
-    body("usrEmail").notEmpty().trim().isEmail(),
+    body("password").notEmpty().trim().isLength({ min: 3, max: 16 }),
+    body("name").notEmpty().trim(),
+    body("email").notEmpty().trim().isEmail(),
     (req, res, next) => {
-      const err = validationResult(req)
-      if (err.isEmpty()) next()
-      else next(error(err.array()))
-    },
-  ]
-}
+      const err = validationResult(req);
 
-module.exports = { joinCreateValidation }
+      if (err.isEmpty()) next();
+      else next(error(err.array()));
+    },
+  ];
+};
+
+module.exports = { joinCreateValidation };

@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const Sequelize = require("sequelize")
 module.exports = class Air extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
@@ -13,9 +13,19 @@ module.exports = class Air extends Sequelize.Model {
         pm10Grade: { type: Sequelize.INTEGER, allowNull: true },
         sidoName: { type: Sequelize.STRING, allowNull: true },
         stationName: { type: Sequelize.STRING, unique: true, allowNull: false },
-        dataTime: { type: Sequelize.STRING, allowNull: false },
-        createdAt: { type: Sequelize.DATE, allowNull: true },
-        updatedAt: { type: Sequelize.DATE, allowNull: true },
+        dataTime: { type: Sequelize.STRING, allowNull: true },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: true,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.fn("NOW"),
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: true,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.fn("NOW"),
+        },
       },
       {
         sequelize,
@@ -27,12 +37,12 @@ module.exports = class Air extends Sequelize.Model {
         charset: "utf8",
         collate: "utf8_general_ci",
       }
-    );
+    )
   }
   static associate(db) {
     db.Air.belongsTo(db.Position, {
       targetKey: "stationName",
       foreignKey: "stationName",
-    });
+    })
   }
-};
+}
