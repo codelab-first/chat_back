@@ -8,6 +8,10 @@ router.get("/positions", async (req, res) => {
   try {
     const { sw_lat, sw_lng, ne_lat, ne_lng } = req.query
 
+    if (!sw_lat && !sw_lng && !ne_lat && !ne_lng) {
+      return res.json([])
+    }
+
     if (!sw_lat || !sw_lng || !ne_lat || !ne_lng) {
       const positions = await Position.findAll({
         attributes: ["stationName", "dmX", "dmY"],
