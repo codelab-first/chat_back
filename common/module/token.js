@@ -10,6 +10,8 @@ const updateToken = (signData) => {
   const refreshToken = jwt.sign({ data: signData }, process.env.SALT_JWT, {
     expiresIn: process.env.EXP_REF_JWT,
   })
+
+  
   const redis = new Redis()
   if (!signData.id) throw new Error("Redis Key undefined")
   redis.set(`RT:${signData.id}`, refreshToken)
