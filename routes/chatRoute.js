@@ -74,7 +74,7 @@ router.get("/searchByDay", async (req, res) => {
     const start = new Date(startDay);
     const end = new Date(endDay);
     // console.log(start, end);
-    start.setDate(start.getDate() - 1);
+    start.setDate(start.getDate());
     end.setDate(end.getDate() + 1);
     const chats = await Chat.findAll({
       where: {
