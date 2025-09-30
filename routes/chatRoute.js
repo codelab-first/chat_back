@@ -19,6 +19,7 @@ const upload = multer({
     },
   }),
 });
+
 const resizeImage = (path) => {
   console.log("path is", path);
   try {
@@ -38,17 +39,11 @@ router.post("/chat", async (req, res, next) => {
     message,
     user: { id },
   } = req.body;
-  // console.log(name);
-  // console.log(app.get("io"));
-  // const decoded=jwt.verify()
-  // console.log("message", message);
   const user = await User.findOne({ where: { id } });
   const chats = await Chat.create({ chat: message, name: user.name });
   user.addChats(chats);
-
   req.app.get("io").emit("message", { chat: message, name: user.name });
   return res.send("ok");
-  // return res.status(200).json({ success: "ok" });
 });
 router.get("/all", async (req, res) => {
   try {
@@ -89,10 +84,31 @@ router.get("/searchByDay", async (req, res) => {
   }
 });
 router.post("/images", upload.array("images"), async (req, res) => {
-  // try {
-  //   req.files.map((file) => {
-  //     sharp(file.path);
-  //   });
-  // } catch (e) {}
+  // console.log(req.files);
+  // console.log("user", JSON.parse(req.body.user));
+  try {
+    const files = req.files.map((file) => ({ url: `/img/${file.filename}` }));
+    const userId = JSON.parse(req.body.user).id;
+    // console.log(userId);
+    const user = await User.findOne({
+      where: { id: userId },
+    });
+    // console.log(files);
+    const images = files.map((file) => file.url).toString();
+    console.log(images);
+    const image = await Chat.create({ image: images, name: user.name });
+    user.addChats(image);
+
+    images.split(",").map((image) => ({
+      url: `${image}`,
+    }));
+
+    req.app.get("io").emit("message", { name: user.name, image: images });
+    // req.app.get("io").emit("chat", { image: images, name: user.name });
+    // req.files.map((file) => {
+    //   sharp(file.path);
+    // });
+    res.json({ success: true });
+  } catch (e) {}
 });
 module.exports = router;
