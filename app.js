@@ -29,8 +29,8 @@ app.use(cors(require("./common/module/cors")()));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", express.static("./public"));
-// app.use("/img", express.static(path.join(__dirname, "uploads")));
-app.use("/img", express.static("uploads/"));
+app.use("/img", express.static(path.join(__dirname, "uploads")));
+// app.use("/img", express.static("uploads/"));
 // app.use("/upload", express.static("./storages"));
 
 const airRoute = require("./routes/airRoute");
