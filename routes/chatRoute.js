@@ -45,17 +45,19 @@ router.post("/chat", async (req, res, next) => {
   req.app.get("io").emit("message", { chat: message, name: user.name });
   return res.send("ok");
 });
-router.get("/all", async (req, res) => {
+router.get("/init", async (req, res) => {
   try {
     const startDay = new Date();
     const endDay = new Date();
     startDay.setDate(startDay.getDate() - 1);
-    endDay.setDate(endDay.getDate());
+    endDay.setDate(endDay.getDate() );
     const chats = await Chat.findAll({
       where: {
         createdAt: { [Op.between]: [startDay, endDay] },
       },
     });
+    console.log(chats);
+    console.log(startDay, endDay);
     return res.status(200).json(chats);
   } catch (e) {
     console.error(e);
@@ -84,31 +86,23 @@ router.get("/searchByDay", async (req, res) => {
   }
 });
 router.post("/images", upload.array("images"), async (req, res) => {
-  // console.log(req.files);
-  // console.log("user", JSON.parse(req.body.user));
   try {
     const files = req.files.map((file) => ({ url: `/img/${file.filename}` }));
     const userId = JSON.parse(req.body.user).id;
-    // console.log(userId);
     const user = await User.findOne({
       where: { id: userId },
     });
-    // console.log(files);
-    const images = files.map((file) => file.url).toString();
-    console.log(images);
-    const image = await Chat.create({ image: images, name: user.name });
+    const images = files.map((file) => file.url);
+    const imageString = files.map((file) => file.url).toString();
+    const image = await Chat.create({
+      image: imageString,
+      name: user.name,
+    });
     user.addChats(image);
-
-    images.split(",").map((image) => ({
-      url: `${image}`,
-    }));
-
     req.app.get("io").emit("message", { name: user.name, image: images });
-    // req.app.get("io").emit("chat", { image: images, name: user.name });
-    // req.files.map((file) => {
-    //   sharp(file.path);
-    // });
-    res.json({ success: true });
-  } catch (e) {}
+    res.status(200).json({ success: true });
+  } catch (e) {
+    console.error(e);
+  }
 });
 module.exports = router;
