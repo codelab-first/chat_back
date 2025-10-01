@@ -1,4 +1,4 @@
-const Air = require("../models")
+const { Air } = require("../models")
 
 async function getAirSidoData(req, res, next) {
   try {
@@ -8,7 +8,7 @@ async function getAirSidoData(req, res, next) {
       // raw: true,
     }
     if (targetSido && targetSido.trim() !== "") {
-      queryOption.where = { regionName: targetSido }
+      queryOption.where = { sidoName: targetSido }
     }
     const airData = await Air.findAll(queryOption)
     console.log(
