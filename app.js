@@ -36,6 +36,8 @@ app.use("/img", express.static(path.join(__dirname, "uploads")))
 const airRoute = require("./routes/airRoute")
 const authRoute = require("./routes/authRoute")
 const chatRoute = require("./routes/chatRoute")
+
+const airSidoDataRoute = require("./routes/airSidoDataRoute")
 const indexRoute = require("./routes")
 
 app.use("/auth", authRoute)
@@ -46,7 +48,6 @@ const positionRoute = require("./routes/postionRoute")
 app.use("/api", positionRoute)
 app.use("/api", airRoute)
 
-const airSidoDataRoute = require("./routes/airSidoDataRoute")
 app.use("/api", airSidoDataRoute)
 
 app.use(notFoundRouter)
