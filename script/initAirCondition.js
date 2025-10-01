@@ -5,10 +5,10 @@ const Air = require("../models/air")
 const initAirCondition = async () => {
   try {
     const count = await Air.count()
-    if (count > 0) {
-      console.log("데이터가 이미 존재합니다. 데이터 삽입을 건너뜁니다.")
-      return
-    }
+    // if (count > 0) {
+    //   console.log("데이터가 이미 존재합니다. 데이터 삽입을 건너뜁니다.")
+    //   return
+    // }
 
     const jsonPath = path.join(__dirname, "json", "airMeasurementExample.json")
     const fileData = fs.readFileSync(jsonPath, "utf8")

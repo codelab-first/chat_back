@@ -29,11 +29,15 @@ app.use(cors(require("./common/module/cors")()))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use("/", express.static("./public"))
-app.use("/upload", express.static("./storages"))
+app.use("/img", express.static(path.join(__dirname, "uploads")))
+// app.use("/img", express.static("uploads/"));
+// app.use("/upload", express.static("./storages"));
 
 const airRoute = require("./routes/airRoute")
 const authRoute = require("./routes/authRoute")
 const chatRoute = require("./routes/chatRoute")
+
+const airSidoDataRoute = require("./routes/airSidoDataRoute")
 const indexRoute = require("./routes")
 
 app.use("/auth", authRoute)
@@ -43,6 +47,8 @@ app.use("/", indexRoute)
 const positionRoute = require("./routes/postionRoute")
 app.use("/api", positionRoute)
 app.use("/api", airRoute)
+
+app.use("/api", airSidoDataRoute)
 
 app.use(notFoundRouter)
 app.use(errorRouter)
