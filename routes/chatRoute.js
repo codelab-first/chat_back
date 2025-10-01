@@ -50,14 +50,14 @@ router.get("/init", async (req, res) => {
     const startDay = new Date();
     const endDay = new Date();
     startDay.setDate(startDay.getDate() - 1);
-    endDay.setDate(endDay.getDate() );
+    endDay.setDate(endDay.getDate());
     const chats = await Chat.findAll({
       where: {
         createdAt: { [Op.between]: [startDay, endDay] },
       },
     });
-    console.log(chats);
-    console.log(startDay, endDay);
+    // console.log(chats);
+    // console.log(startDay, endDay);
     return res.status(200).json(chats);
   } catch (e) {
     console.error(e);
@@ -99,6 +99,7 @@ router.post("/images", upload.array("images"), async (req, res) => {
       name: user.name,
     });
     user.addChats(image);
+    console.log("images", images);
     req.app.get("io").emit("message", { name: user.name, image: images });
     res.status(200).json({ success: true });
   } catch (e) {
