@@ -9,13 +9,11 @@ module.exports = class User extends Sequelize.Model {
         createdAt: {
           type: Sequelize.DATE,
           allowNull: true,
-          type: Sequelize.DATE,
           defaultValue: Sequelize.fn("NOW"),
         },
         updatedAt: {
           type: Sequelize.DATE,
           allowNull: true,
-          type: Sequelize.DATE,
           defaultValue: Sequelize.fn("NOW"),
         },
       },
