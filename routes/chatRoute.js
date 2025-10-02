@@ -4,6 +4,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const { Chat, User } = require("../models");
 const { Op } = require("sequelize");
+
 const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   storage: multer.diskStorage({
@@ -18,6 +19,7 @@ const upload = multer({
     },
   }),
 });
+
 const resizeImage = (path) => {
   console.log("path is", path);
   try {
@@ -33,17 +35,17 @@ const resizeImage = (path) => {
   }
 };
 router.post("/chat", async (req, res, next) => {
-  const { message } = req.body;
-  const user = await User.findOne({ where: { id: req.user.id } });
-  const chats = await Chat.create({ chat: message, name: req.user.name });
+  const {
+    message,
+    user: { id },
+  } = req.body;
+  const user = await User.findOne({ where: { id } });
+  const chats = await Chat.create({ chat: message, name: user.name });
   user.addChats(chats);
-  req.app
-    .get("io")
-    .to("chat")
-    .emit("chat", { chat: message, name: req.user.name });
+  req.app.get("io").emit("message", { chat: message, name: user.name });
   return res.send("ok");
 });
-router.get("/all", async (req, res) => {
+router.get("/init", async (req, res) => {
   try {
     const startDay = new Date();
     const endDay = new Date();
@@ -54,20 +56,29 @@ router.get("/all", async (req, res) => {
         createdAt: { [Op.between]: [startDay, endDay] },
       },
     });
+    // console.log(chats);
+    // console.log(startDay, endDay);
     return res.status(200).json(chats);
   } catch (e) {
     console.error(e);
     return res.status(400).json(e.message);
   }
 });
-router.get("/searchChat", async (req, res) => {
+router.get("/searchByDay", async (req, res) => {
   try {
     const { startDay, endDay } = req.query;
+    // console.log(startDay, endDay);
+    const start = new Date(startDay);
+    const end = new Date(endDay);
+    // console.log(start, end);
+    start.setDate(start.getDate());
+    end.setDate(end.getDate() + 1);
     const chats = await Chat.findAll({
       where: {
-        createdAt: { [Op.between]: [startDay, endDay] },
+        createdAt: { [Op.between]: [start, end] },
       },
     });
+    // console.log(chats);
     return res.status(200).json(chats);
   } catch (e) {
     console.error(e);
@@ -75,10 +86,24 @@ router.get("/searchChat", async (req, res) => {
   }
 });
 router.post("/images", upload.array("images"), async (req, res) => {
-  // try {
-  //   req.files.map((file) => {
-  //     sharp(file.path);
-  //   });
-  // } catch (e) {}
+  try {
+    const files = req.files.map((file) => ({ url: `/img/${file.filename}` }));
+    const userId = JSON.parse(req.body.user).id;
+    const user = await User.findOne({
+      where: { id: userId },
+    });
+    const images = files.map((file) => file.url);
+    const imageString = files.map((file) => file.url).toString();
+    const image = await Chat.create({
+      image: imageString,
+      name: user.name,
+    });
+    user.addChats(image);
+    console.log("images", images);
+    req.app.get("io").emit("message", { name: user.name, image: images });
+    res.status(200).json({ success: true });
+  } catch (e) {
+    console.error(e);
+  }
 });
 module.exports = router;

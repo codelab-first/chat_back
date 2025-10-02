@@ -86,7 +86,7 @@ const loginUser = () => {
           };
           // console.log(signData);
           const { accessToken, refreshToken } = updateToken(signData);
-          req.users = { user: userData, accessToken, refreshToken };
+          req.user = { user: userData, accessToken, refreshToken };
           return next();
         }
       }
