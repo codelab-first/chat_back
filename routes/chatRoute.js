@@ -43,7 +43,7 @@ router.post("/chat", async (req, res, next) => {
   const chats = await Chat.create({ chat: message, name: user.name });
   user.addChats(chats);
   req.app.get("io").emit("message", { chat: message, name: user.name });
-  return res.send("ok");
+  return res.status(200).send("ok");
 });
 router.get("/init", async (req, res) => {
   try {
